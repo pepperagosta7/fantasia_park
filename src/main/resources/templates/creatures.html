@@ -20,7 +20,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Type</th>
+                    <th>Species</th>
+                    <th>Danger Level</th>
                     <th>Custode</th>
                     <th>Actions</th>
                 </tr>
@@ -29,14 +30,15 @@
                 <tr th:each="creature : ${creatures}">
                     <td th:text="${creature.id}"></td>
                     <td th:text="${creature.name}"></td>
-                    <td th:text="${creature.type}"></td>
+                    <td th:text="${creature.species}"></td>
+                    <td th:text="${creature.dangerLevel}"></td>
                     <td th:text="${creature.custode.username}"></td>
                     <td>
-                        <form th:action="@{/creatures/{id}(id=${creature.id})}" method="post" style="display:inline;">
+                        <form th:action="@{/creatures/${creature.id}}" method="delete" style="display:inline;">
                             <input type="hidden" name="_method" value="delete"/>
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
-                        <a th:href="@{/creatures/edit/{id}(id=${creature.id})}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{/creatures/${creature.id}}" class="btn btn-primary btn-sm">Edit</a>
                     </td>
                 </tr>
             </tbody>
@@ -50,8 +52,12 @@
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="type">Type</label>
-                <input type="text" class="form-control" id="type" name="type" required>
+                <label for="species">Species</label>
+                <input type="text" class="form-control" id="species" name="species" required>
+            </div>
+            <div class="form-group">
+                <label for="dangerLevel">Danger Level</label>
+                <input type="number" class="form-control" id="dangerLevel" name="dangerLevel" min="1" max="10" required>
             </div>
             <button type="submit" class="btn btn-success">Add Creature</button>
         </form>

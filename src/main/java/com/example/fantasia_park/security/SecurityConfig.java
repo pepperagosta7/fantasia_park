@@ -48,34 +48,25 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disabilitiamo il CSRF per semplificare (in produzione valutare attentamente
-                // questa scelta)
-                .csrf(csrf -> csrf.disable())
-                // Configuriamo le autorizzazioni: le pagine di registrazione e login sono
-                // accessibili a tutti
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Accesso solo per admin
-                        .anyRequest().authenticated())
-                // Configuriamo il form di login
-                .formLogin(form -> form
-                        .loginPage("/auth/login") // Pagina personalizzata di login
-                        .loginProcessingUrl("/auth/login") // URL a cui il form invia i dati
-                        .defaultSuccessUrl("/creatures", true) // Redirect in caso di login avvenuto con successo
-                        .permitAll())
-                // Configuriamo il logout
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth/login?logout")
-                        .permitAll())
-                // Configuriamo il provider di autenticazione
-                .authenticationProvider(authenticationProvider());
-                
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated())
+            .formLogin(form -> form
+                .loginPage("/auth/login")
+                .loginProcessingUrl("/auth/login")
+                .defaultSuccessUrl("/creatures", true) // Redirect in caso di login avvenuto con successo
+                .permitAll())
+            .logout(logout -> logout
+                .logoutUrl("/auth/logout")
+                .logoutSuccessUrl("/auth/login?logout")
+                .permitAll())
+            .authenticationProvider(authenticationProvider());
+
         return http.build();
     }
 
